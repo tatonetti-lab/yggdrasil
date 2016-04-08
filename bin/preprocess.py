@@ -59,4 +59,5 @@ a = [x[0] == 'categorical' for x in features]
 to_encode = list(zip(*list(compress(features, a)))[1])
 integerized = np.apply_along_axis(le.fit_transform, 0, X_categorical)
 enc = sklearn.preprocessing.OneHotEncoder(n_values=to_encode)
-enc.fit_transform(integerized)
+X_onehot = enc.fit_transform(integerized)
+np.save('../data/preprocessed/X_categorical_onehot.npy', X_onehot)

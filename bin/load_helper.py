@@ -10,6 +10,8 @@ from sklearn import preprocessing
 from sklearn import feature_selection
 from sklearn import cross_validation
 import sklearn
+import gc  # garbage collection routines
+import os
 
 print "Loading data from binary numpy files..."
 if 'X_cat' not in globals():
@@ -28,23 +30,23 @@ if 'X' not in globals():
     print '  loading X'
     X = np.concatenate((X_num, X_cat_onehot), axis=1)
 
+if not os.path.exists('../data/preprocessed/ready_for_clf'):
+    os.makedirs('../data/preprocessed/ready_for_clf')
+
 print "Removing features containing negative values..."
 # remove features with negative values (columns 31 and 32):
 X_new = np.delete(X, 31, 1)
+del(X)
+gc.collect()
 X_new = np.delete(X_new, 31, 1)
+np.save('../data/preprocessed/ready_for_clf/X_new.npy', X_new)
 
 k = 100
 print "Selecting {0} best features based on chi-square score...".format(k)
 # select 1000 features with best chi square values
 X_new2 = sklearn.feature_selection.SelectKBest(sklearn.feature_selection.chi2, k=k).fit_transform(X_new, y)
-
-X_scaled = preprocessing.scale(X)
-
-
-print "Creating cross-validation sets"
-X_train, X_test, y_train, y_test = cross_validation.train_test_split(X_new2, y,
-                                                                     test_size=0.33,
-                                                                     random_state=0)
+del(X_new)
+gc.collect()
 
 def cv(classifier, params):
     clf = classifier(**params)

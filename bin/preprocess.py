@@ -6,67 +6,40 @@ from sklearn import cross_validation
 from itertools import compress  # for filtering by boolean array
 import argparse
 
-parser = argparse.ArgumentParser(
-    description='Preprocess data for Kaggle competition.')
-parser.add_argument('-i', '--input_file',
-                    default="../data/data.csv")
-parser.add_argument('-o', '--quiz_file',
-                    default="../data/quiz.csv")
-parser.add_argument('-f', '--features',
-                    default="../data/field_types.txt")
-parser.add_argument('-v', '--verbosity',
-                    action="count",
-                    default=1,
-                    help="increase output verbosity")
 
-args = parser.parse_args()
+# get/bind data
+data = np.genfromtxt("../data/data.csv", delimiter=',', dtype=np.str_)
+quiz = np.genfromtxt("../data/quiz.csv", delimiter=',', dtype=np.str_)
+y = data[1:, -1].astype(float)
+data = data[1:, :-1]
+quiz = quiz[1:, :]
+bind = np.concatenate((data, quiz), axis=0)
 
-def preprocess(infile, outprefix):
-    # READ DATA
-    if args.verbosity >= 1:
-        print "Reading data from input file: {0}".format(infile)
-    data = np.genfromtxt(infile, delimiter=',', dtype=np.str_)
-    # read features file and determine type for each feature column
-    dt = np.dtype([('numeric', np.float64), ('categorical', np.str_, 16)])
-    feature_file = tuple(open(args.features, 'r'))
-    print "Types of features present:"
-    features = [get_dtype(l) for l in feature_file]
-    # split into two matrices and extract labels
-    f, _ = zip(*features)
-    f = np.array(f)
-    n = (f == 'numeric')
-    if infile == '../data/data.csv':
-        X_numeric = data[:, :-1][:, n][1:, :].astype(float)
-        X_categorical = data[:, :-1][:, np.invert(n)][1:, :]
-        y = data[:, (data.shape[1]-1)][1:].astype(float)
-        np.save('../data/preprocessed/y{0}.npy'.format(outprefix), y)
-    elif infile == '../data/quiz.csv':
-        X_numeric = data[:, n][1:, :].astype(float)
-        X_categorical = data[:, np.invert(n)][1:, :]
-    else:
-        print "Error!!! Bad 'infile'"
-        raise
-    np.save('../data/preprocessed/X{0}_numeric.npy'.format(outprefix), X_numeric)
-    np.save('../data/preprocessed/X{0}_categorical.npy'.format(outprefix), X_categorical)
-    # encode categorical features
-    le = sklearn.preprocessing.LabelEncoder()
-    a = [x[0] == 'categorical' for x in features]
-    to_encode = list(zip(*list(compress(features, a)))[1])
-    integerized = np.apply_along_axis(le.fit_transform, 0, X_categorical)
-    enc = sklearn.preprocessing.OneHotEncoder(n_values=to_encode)
-    X_onehot = enc.fit_transform(integerized).todense()
-    np.save('../data/preprocessed/X{0}_categorical_onehot.npy'.format(outprefix), X_onehot)
+feature_file = tuple(open("../data/field_types.txt", 'r'))
+features = [get_dtype(l) for l in feature_file]
+f, _ = zip(*features)
+f = np.array(f)
+n = (f == 'numeric')
 
-def get_dtype(line):
-    """Note: doesn't take number of levels into account"""
-    words = line.split()
-    if words[1] == 'numeric':
-        print '(numeric, None)'
-        return ('numeric', None)
-    else:
-        print '(\'categorical\', {0})'.format(len(words) - 1)
-        return ('categorical', len(words) - 1)
+X_numeric = bind[:, n][1:, :].astype(float)
+X_categorical = bind[:, np.invert(n)][1:, :]
+#np.save('../data/preprocessed/X{0}_numeric.npy'.format(outprefix), X_numeric)
+#np.save('../data/preprocessed/X{0}_categorical.npy'.format(outprefix), X_categorical)
 
-preprocess(args.input_file, "")
+# encode categorical features
+le = sklearn.preprocessing.LabelEncoder()
+a = [x[0] == 'categorical' for x in features]
+to_encode = list(zip(*list(compress(features, a)))[1])
+integerized = np.apply_along_axis(le.fit_transform, 0, X_categorical)
+enc = sklearn.preprocessing.OneHotEncoder(n_values=to_encode)
+X_onehot = enc.fit_transform(integerized).todense()
 
-preprocess(args.quiz_file, "_test")
+X_cat_onehot = X_onehot[:126837, :]
+X_q_cat_onehot = X_onehot[126837:, :]
+X_num = X_numeric[:126836, :]
+X_q_num = X_numeric[126836:, :]
+
+np.save('../data/preprocessed/X_num.npy', X_num)
+np.save('../data/preprocessed/X_q_num.npy', X_q_num)
+np.save('../data/preprocessed/X_cat_onehot.npy', X_cat_onehot)
+np.save('../data/preprocessed/X_q_cat_onehot.npy', X_q_cat_onehot)

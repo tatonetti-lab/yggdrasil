@@ -1,0 +1,59 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{authblk}
+\usepackage[margin=1in]{geometry}
+
+\usepackage{amsmath}
+
+
+\begin{document}
+\title{Yggdrasil:\\Natural speech learning with random forests}
+\author[1]{Joseph D. Romano\thanks{jdr2160@cumc.columbia.edu}}
+\author[1]{Alexandre Yahi\thanks{ay2318@cumc.columbia.edu}}
+\affil[1]{Departments of Biomedical Informatics, Systems Biology, and Medicine, Columbia Univeristy}
+\renewcommand\Authands{ and }
+\date{\today}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%
+% BEGIN CHAPTERS %
+%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+
+Natural language processing and speech recognition comprise one of the largest applications of machine learning and data mining techniques, spanning diverse industries such as economics, healthcare, information retrieval, and personal computing<REFs>.
+
+\section{Description of provided data}
+
+The original input we were provided with consisted of 126837 data records and 52 features, 36 of which were numeric (including binary 0/1) and 16 categorical. Each categorial feature had a variable number of potential categories. It is unclear what each feature vector represents, but the labels corresponding to some of the categorical feature vectors provide clues as to their meanings. For example, the categorical feature vector labeled ``26'' includes terms such as {\tt vacknoweldge\_acknowledge}, {\tt vacknowledge\_explain}, and {\tt vacknowledge\_clarify}, suggesting that it encodes the type of response given by one of the two parties holding the conversation. Other features seem to encode information about prepositional phrases, object comparisons, negation, and others. Some further information about the original encoding of the data is available in <ref>.
+
+\section{Learning approach}
+
+Our optimal learning approach for the binary speech classification problem involved two main steps:
+
+\begin{enumerate}
+  \item Encoding all categorical feature vectors as sets of binary vectors via expansion 
+  \item Training a random forest classifier and predicting over unlabeled data
+\end{enumerate}
+
+We will discuss each of these below:
+
+\subsection{Preprocessing and one-hot encoding of categorical features}
+One noteworthy characteristic of most random forest classifiers is that they are unaffected by scaling, centering, and other monotonic transformations, since all operations on the data are simply linear partitioning (although it is possible to design non-linear decision boundaries for partitioning the data, doing so is generally unnecessary with random forests).
+
+\subsection{Training and running random forest classifier}
+  
+\section{Results}
+
+\section{Discussion}
+
+\section{Conclusions}
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

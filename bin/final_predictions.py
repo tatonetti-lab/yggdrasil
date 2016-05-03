@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 
+#######################################################################
+# Project code for Yggdrasil - COMS W4107 predictive modeling project #
+# Authors:                                                            #
+#   Joseph D. Romano                                                  #
+#   Alexandre Yahi                                                    #
+# Copyright (c) 2016                                                  #
+# License: The MIT License (MIT)                                      #
+#######################################################################
+
+
 import numpy as np
 import sklearn
 import sys
@@ -163,10 +173,6 @@ print "Performing cross validation...\n"
 print "CROSS VALIDATION SCORE: {0}".format(clf.score(X_test, y_test))
 
 
-############################
-# PREDICT and WRITE OUTPUT #
-############################
-
+# PREDICT and WRITE OUTPUT
 print "\nPredicting labels on quiz set and priting output to file."
-
 makeoutput(clf.predict(X_q))

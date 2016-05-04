@@ -11,7 +11,7 @@
 \title{Yggdrasil:\\Natural speech learning with random forests}
 \author[1]{Joseph D. Romano\thanks{jdr2160@cumc.columbia.edu}}
 \author[1]{Alexandre Yahi\thanks{ay2318@cumc.columbia.edu}}
-\affil[1]{Departments of Biomedical Informatics, Systems Biology, and Medicine, Columbia Univeristy}
+\affil[1]{Departments of Biomedical Informatics, Systems Biology, and Medicine, Columbia University}
 \renewcommand\Authands{ and }
 \date{\today}
 \maketitle
@@ -40,15 +40,23 @@ Our optimal learning approach for the binary speech classification problem invol
 We will discuss each of these below:
 
 \subsection{Data preprocessing and feature design}
-One noteworthy characteristic of most random forest classifiers is that they are unaffected by scaling, centering, and other monotonic transformations, since all operations on the data are simply linear partitioning (although it is possible to design non-linear decision boundaries for partitioning the data, doing so is generally unnecessary with random forests).
+One noteworthy characteristic of most random forest classifiers is that they are unaffected by scaling, centering, and other monotonic transformations, since all operations on the data are simply linear partitioning (although it is possible to design non-linear decision boundaries for partitioning the data, doing so is generally unnecessary with random forests).\\
+In order to feed categorical features into our model, we performed a one-hot encoding. This preprocessing step transform a categorical feature with $n$ possible values into $n$ distinct binary features where only one of them can be positive for each learning instance.\\
+For consistency purposes, we performed the feature expansion with both training and quizz dataset to keep track of the expansion order of the features and make sure we kept track of the final feature list. We then separated the datasets back and split numerical and expanded binary features for each set.
 
 \subsection{Model description}
 
+Random forest is a meta-algorithm of he family of bagging algorithms. It is performing bootstrap sampling to train decision trees with the particularity of doing the split on only $\sqrt{d}$ of the $d$ features. <CITE Leo Breiman paper> Although random forest can accept any type of data, should they be ordinal, categorical or numerical, the implementation of the random forest algorithm in scikit-learn required numerical input, hence our pre-processing step. We decided to use 600 estimators which offered a good compromise of computing-time and performances as the accuracy plateaued starting around 500 decision trees. The quality of the split of each tree was assessed with the Gini impurity function. The stopping criterion was that nodes would be expanded until all the leaves are pure. Each iteration of the bagging meta-algorithm involved bootstrap samples when building trees. 
+
 \subsection{Model selection}
+
+For the initial exploration of the data, we set up a pipeline with 10-fold cross validation to get a sense of which learning algorithm would perform the best. We found that random forest was returning above baseline predictions just by training at numerical variables, and that support vector machine (SVM) was not appropriate for this dataset in addition of taking much more time to train.
   
 \section{Results}
 
 \subsection{Predictor evaluation}
+
+We trained our model on the concatenation of numerical features and categorical features expanded into binary ones for the reasons above mentioned. We randomly split the training data into a training set (33\%) and a hold-out set to evaluate the performances and tune our random forest model parameters. We performed a 10-fold cross validation on the hold out set.
 
 \subsection{Results of evaluation and analysis}
 

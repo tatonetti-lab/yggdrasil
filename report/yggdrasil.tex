@@ -46,11 +46,11 @@ For consistency purposes, we performed the feature expansion with both training 
 
 \subsection{Model description}
 
-Random forest is a meta-algorithm of he family of bagging algorithms. It is performing bootstrap sampling to train decision trees with the particularity of doing the split on only $\sqrt{d}$ of the $d$ features. <CITE Leo Breiman paper> Although random forest can accept any type of data, should they be ordinal, categorical or numerical, the implementation of the random forest algorithm in scikit-learn required numerical input, hence our pre-processing step. We decided to use 600 estimators which offered a good compromise of computing-time and performances as the accuracy plateaued starting around 500 decision trees. The quality of the split of each tree was assessed with the Gini impurity function. The stopping criterion was that nodes would be expanded until all the leaves are pure. Each iteration of the bagging meta-algorithm involved bootstrap samples when building trees. 
+Random forest is a meta-algorithm of the family of bagging algorithms. It is performing bootstrap sampling to train decision trees with the particularity of doing the split on only $\sqrt{d}$ of the $d$ features. <CITE Leo Breiman paper> Although random forest can accept any type of data, should they be ordinal, categorical or numerical, the implementation of the random forest algorithm in scikit-learn required numerical input, hence our pre-processing step. We decided to use 600 estimators which offered a good compromise of computing-time and performances as the accuracy plateaued starting around 500 decision trees. The quality of the split of each tree was assessed with the Gini impurity function. The stopping criterion was that nodes would be expanded until all the leaves are pure. Each iteration of the bagging meta-algorithm involved bootstrap samples when building trees. 
 
 \subsection{Model selection}
 
-For the initial exploration of the data, we set up a pipeline with 10-fold cross validation to get a sense of which learning algorithm would perform the best. We found that random forest was returning above baseline predictions just by training at numerical variables, and that support vector machine (SVM) was not appropriate for this dataset in addition of taking much more time to train.
+For the initial exploration of the data, we set up a pipeline with 10-fold cross validation to get a sense of which learning algorithm would perform the best. We found that random forest was returning above baseline predictions just by training at numerical variables (0.893 compared to MLP 0.74), and that support vector machine (SVM) was not appropriate for this dataset in addition of taking much more time to train. [Give results about other methods we tried]
   
 \section{Results}
 
@@ -60,7 +60,34 @@ We trained our model on the concatenation of numerical features and categorical 
 
 \subsection{Results of evaluation and analysis}
 
+For the evaluation of the random forest method we picked, we had to tune the number of trees (estimators) per iteration. In order to select empirically the best number of estimators based on the labeled set available, we computed the cross-validation score, the accuracy, the average precision, the F1 score, the precision, the recall and the area under the ROC.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+Estimators & CV score & Accuracy & Average Precision & F1 score & Precision & Recall & AUROC \\
+\hline \hline
+5 & 92.99 & 92.98 & 94.01 & 91.86 & 93.46 & 90.31 & 92.67 \\
+10 & 93.63 & 93.64 & 94.96 & 92.48 & 95.96 & 89.24 & 93.15 \\
+50 & 94.21 & 94.21 & 95.42 & 93.18 & 96.32 & 90.24 & 93.77 \\
+100 & 94.14 & 94.14 & 95.35 & 93.10 & 96.20 & 90.20 & 93.70 \\
+250 & 94.22 & 94.22 & 95.43 & 93.19 & 96.35 & 90.23 & 93.78 \\
+500 & 94.25 & 94.25 & 95.45 & 93.23 & 96.33 & 90.32 & 93.82 \\
+600 & 94.22 & 94.22 & 95.44 & 93.19 & 96.39 & 90.19 & 93.77 \\
+750 & 94.22 & 94.22 & 95.43 & 93.20 & 96.33 & 90.26 & 93.79 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+Comment the table.
+
 \section{Discussion}
+
+This dataset highlighted several important concepts in machine learning. First, the No Free Lunch Theorem reminds us that there is no perfect learning algorithm that can perform well in any situation. This problem presents specificity that has failed highly tunable models like SVM. SVM needs fine setting of kernel and hyper-parameters and we could not find the appropriate set of parameters during the exploratory phase of the study to keep this method as a potential candidate. We tried other powerful methods such as Multi Layer Perceptron, a neural network method that did not perform well at first with a quasi-Newton method (0.74 accuracy) and plateaued at 0.93 once we selected a stochastic gradient-based optimization algorithm. Usually neural networks are methods with high variance while random forest is considered a small variance model. It did not required any centering and standardization at the difference of the other algorithms.\\
+We can therefore hypothesize that the data that we have 
+It is also important to note that because we were using scikit-learn, one of the few packages allowed for this challenge with Python, we were limited by the fact that all its methods only accept numerical features. This led us too perform a one-hot expansion that resulted in a dramatic increase in features
 
 \section{Conclusions}
 

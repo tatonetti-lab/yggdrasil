@@ -1,0 +1,37 @@
+\begin{thebibliography}{1}
+
+\bibitem{Anderson:1991uh}
+A~H Anderson, M~Bader, E~G Bard, and E~Boyle.
+\newblock {The HCRC map task corpus}.
+\newblock {\em Language and Speech}, 34(4):351--366, 1991.
+
+\bibitem{Bello:1992wy}
+M~G Bello.
+\newblock {Enhanced training algorithms, and integrated training/architecture
+  selection for multilayer perceptron networks}.
+\newblock {\em IEEE Transactions on Neural Networks}, 3(6):864--875, 1992.
+
+\bibitem{Breiman:2001wf}
+L~Breiman.
+\newblock {Random forests}.
+\newblock {\em Machine learning}, 45(1):5--32, 2001.
+
+\bibitem{Cambria:2014ck}
+E~Cambria and B~White.
+\newblock {Jumping NLP curves: a review of natural language processing research
+  [review article]}.
+\newblock {\em Computational Intelligence Magazine}, 9(2):48--57, 2014.
+
+\bibitem{Grabmeier:2007da}
+Johannes~L Grabmeier and Larry~A Lambe.
+\newblock {Decision trees for binary classification variables grow equally with
+  the Gini impurity measure and Pearson's chi-square test}.
+\newblock {\em International Journal of Business Intelligence and Data Mining},
+  2(2):213, 2007.
+
+\bibitem{Wolpert:1997ci}
+D~Wolpert.
+\newblock {\em {No free lunch theorem for optimization}}, volume~1.
+\newblock IEEE Transactions on Evolutionary Computation, 1997.
+
+\end{thebibliography}

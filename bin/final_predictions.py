@@ -147,10 +147,10 @@ X_onehot = enc.fit_transform(integerized).todense()
 
 
 # SPLIT BACK INTO TRAIN AND QUIZ SETS, SEPARATE NUMERIC FROM CATEGORICAL VARS
-X_cat = X_onehot[:126837, :]
-X_q_cat = X_onehot[126837:, :]
-X_num = X_numeric[:126837, :]
-X_q_num = X_numeric[126837:, :]
+X_cat = X_onehot[:data_new.shape[0], :]
+X_q_cat = X_onehot[data_new.shape[0]:, :]
+X_num = X_numeric[:data_new.shape[0], :]
+X_q_num = X_numeric[data_new.shape[0]:, :]
 
 
 # JAM NUMERICAL AND CATEGORICAL FEATURES TOGETHER FOR RANDOM FOREST
@@ -167,7 +167,7 @@ print "Training classifier"
 print "\n!!!WARNING!!! - this takes quite a long time, \
 even on a very fast computer!"
 clf = RandomForestClassifier(n_estimators=600, verbose=True,
-                             n_jobs=4)
+                             n_jobs=4, oob_score=True)
 clf.fit(X_train, y_train)
 print "Performing cross validation...\n"
 print "CROSS VALIDATION SCORE: {0}".format(clf.score(X_test, y_test))

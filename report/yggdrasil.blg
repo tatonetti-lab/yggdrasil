@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: yggdrasil.aux
+The style file: plain.bst
+Database file #1: yggdrasil.bib
+You've used 6 entries,
+            2118 wiz_defined-function locations,
+            542 strings with 4996 characters,
+and the built_in function-call counts, 1807 in all, are:
+= -- 180
+> -- 70
+< -- 1
++ -- 28
+- -- 22
+* -- 134
+:= -- 313
+add.period$ -- 18
+call.type$ -- 6
+change.case$ -- 28
+chr.to.int$ -- 0
+cite$ -- 6
+duplicate$ -- 67
+empty$ -- 149
+format.name$ -- 22
+if$ -- 365
+int.to.chr$ -- 0
+int.to.str$ -- 6
+missing$ -- 7
+newline$ -- 33
+num.names$ -- 12
+pop$ -- 22
+preamble$ -- 1
+purify$ -- 23
+quote$ -- 0
+skip$ -- 44
+stack$ -- 0
+substring$ -- 124
+swap$ -- 7
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 22
+warning$ -- 0
+while$ -- 21
+width$ -- 7
+write$ -- 68
